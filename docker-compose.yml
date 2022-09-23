@@ -1,0 +1,25 @@
+version: '3'
+services:
+  mysql_container:
+    image: mysql/mysql-server:latest
+    env_file:
+      - ./data/.env
+    container_name: "mysql_data"
+    ports:
+      - 3307:3307
+    volumes:
+      - ./data/datadir:/var/lib/mysql
+      - ./data/cnf/my.cnf:/etc/mysql/my.cnf
+      - ./data/tmp:/tmp
+    command:
+      [
+        "mysqld",
+        "--log-bin=mysql-bin",
+        "--server-id=2",
+        "--default-authentication-plugin=mysql_native_password"
+      ]
+    networks:
+      - overlay
+
+networks:
+  overlay:
